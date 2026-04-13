@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { margin:0; font-family:sans-serif; background:#f4f6f8; }
+.header { background:#2c3e50; color:white; padding:15px; display:flex; justify-content:space-between; }
+button { margin:5px; padding:8px 12px; background:#3498db; color:white; border:none; }
+.container { padding:20px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
+.card { background:white; padding:20px; border-radius:10px; }
+
+.glass {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.hover-lift {
+  transition: all 0.3s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0 }
+  to { transform: scale(1); opacity: 1 }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.25s ease;
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+.card-modern {
+  @apply bg-white rounded-2xl p-5 shadow-md transition-all duration-300 cursor-pointer;
+}
+
+.card-modern:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.icon-box {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-gradient {
+  background: linear-gradient(45deg, #3498db, #6c5ce7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.container {
+  @apply px-3 md:px-6 lg:px-10;
+}
+
+.grid-responsive {
+  @apply grid gap-4 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4;
+}
+
+.card-modern {
+  @apply p-4 md:p-5;
+}
+
+.table-responsive {
+  @apply overflow-x-auto;
+}
+
+.header-modern {
+  @apply flex flex-col md:flex-row md:items-center md:justify-between gap-3;
+}
