@@ -21,11 +21,16 @@ export default function Header({ setPage, page }) {
         {/* KIRI */}
         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
 
-          <h1 className="font-bold text-base md:text-lg flex items-center gap-2">
+          {/* 🔥 LOGO CLICKABLE */}
+          <h1
+            onClick={() => setPage("landing")}
+            className="font-bold text-base md:text-lg flex items-center gap-2 cursor-pointer hover:opacity-80 transition"
+          >
             <i className="fas fa-trash-alt"></i>
             Smart Trash IoT
           </h1>
 
+          {/* STATUS */}
           <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full text-xs md:text-sm w-fit">
             <span
               className={`w-2 h-2 rounded-full ${
