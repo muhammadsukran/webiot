@@ -44,9 +44,10 @@ export default function StatsDetail({ stats }) {
   const data = stats[selected] || {};
 
   const totalW =
-    data.total_weight_kg ??
-    data.total_berat ??
-    0;
+  data.total_weight_kg ??
+  data.total_berat ??
+  data.avg_weight_kg ??
+  0;
 
   return (
     <div className="glass p-3 md:p-4 rounded-2xl hover-lift">

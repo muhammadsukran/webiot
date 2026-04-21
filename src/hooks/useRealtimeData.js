@@ -1,16 +1,33 @@
 import { useEffect, useState } from "react";
-import { database } from "../services/firebase";
-import { ref, onValue } from "firebase/database";
+import { db } from "../services/firebase";
+import { handleStatusUpdate } from "../services/telegram";
 
 export default function useRealtimeData() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    const dbRef = ref(database, "tong_sampah");
+    const ref = db.ref("tong_sampah");
 
-    onValue(dbRef, (snap) => {
-      setData(snap.val());
-    });
+    const handleValue = (snap) => {
+      const val = snap.val();
+
+      console.log("🔥 Firebase masuk:", val);
+
+      if (val) {
+        setData({ ...val });
+
+        // TRIGGER TELEGRAM LANGSUNG
+        if (val.status) {
+          handleStatusUpdate(val.status);
+        }
+      }
+    };
+
+    ref.on("value", handleValue);
+
+    return () => {
+      ref.off("value", handleValue);
+    };
   }, []);
 
   return data;

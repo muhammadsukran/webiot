@@ -21,7 +21,6 @@ export default function Header({ setPage, page }) {
         {/* KIRI */}
         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
 
-          {/* 🔥 LOGO CLICKABLE */}
           <h1
             onClick={() => setPage("landing")}
             className="font-bold text-base md:text-lg flex items-center gap-2 cursor-pointer hover:opacity-80 transition"

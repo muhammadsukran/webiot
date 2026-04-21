@@ -1,10 +1,20 @@
-//Kartu untuk menampilkan berat sampah dengan indikator warna dan ikon
+// Kartu untuk menampilkan berat sampah dengan indikator warna dan ikon
 
 export default function WeightCard({ data }) {
-  const weight = parseFloat(data.weight ?? data.berat ?? 0);
-  const volume = data.volume || 0;
+  // ambil weight dari berbagai kemungkinan field
+  const rawWeight = parseFloat(
+    data?.weight_kg ?? data?.weight ?? data?.berat ?? 0
+  );
 
-  const ratio = Math.min(weight / 5, 1);
+  // handle NaN & negatif
+  const weight = isNaN(rawWeight) ? 0 : rawWeight;
+  const safeWeight = Math.max(0, weight);
+
+  //ambil volume
+  const volume = data?.volume ?? 0;
+
+  // hitung rasio visual
+  const ratio = Math.min(safeWeight / 5, 1);
   const height = 25 - ratio * 17;
 
   return (
@@ -44,6 +54,7 @@ export default function WeightCard({ data }) {
         />
         <div className="w-20 h-2 bg-gray-500 mt-1 rounded"></div>
       </div>
+
     </div>
   );
 }

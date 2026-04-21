@@ -10,7 +10,7 @@ const HeaderLanding = ({ setPage }) => {
           className="navbar-brand fw-bold text-dark d-flex align-items-center gap-2 border-0 bg-transparent"
         >
           <i className="fas fa-recycle text-success"></i>
-          SmartBin IoT
+          Smart Trash IoT
         </button>
 
         <button
@@ -29,7 +29,7 @@ const HeaderLanding = ({ setPage }) => {
             className="btn btn-primary rounded-pill px-4"
           >
             <i className="fas fa-chart-line me-2"></i>
-            Dashboard
+            Monitoring
           </button>
 
         </div>

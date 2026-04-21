@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "../services/firebase";
+import { handleStatusUpdate } from "../services/telegram"; // 🔥 tambah ini
 
 import VolumeCard from "../components/cards/VolumeCard";
 import DistanceCard from "../components/cards/DistanceCard";
@@ -14,27 +15,58 @@ export default function RealtimePage() {
   const [stats, setStats] = useState({});
 
   useEffect(() => {
-    const ref = db.ref("tong_sampah");
+    const refTong = db.ref("tong_sampah");
+    const refStats = db.ref("daily_stats");
 
-    ref.on("value", (snap) => {
+
+    const handleTong = (snap) => {
       const val = snap.val();
+
+      console.log("🔥 Data tong_sampah:", val);
+
       if (val) {
         setData(val);
-        
+
+
+        if (val.status) {
+          console.log("📨 Kirim ke Telegram:", val.status);
+
+          handleStatusUpdate(val.status);
+
+          console.log("✅ Trigger Telegram selesai");
+        }
+      } else {
+        console.log("❌ Data tong_sampah kosong");
       }
-    });
+    };
 
-    db.ref("daily_stats").on("value", (snap) => {
-      setStats(snap.val() || {});
-    });
 
-    return () => ref.off();
+    const handleStats = (snap) => {
+      const val = snap.val();
+
+      console.log("📊 Data daily_stats:", val);
+
+      if (val) {
+        setStats(val);
+      } else {
+        console.log("❌ Data daily_stats kosong");
+      }
+    };
+
+    refTong.on("value", handleTong);
+    refStats.on("value", handleStats);
+
+
+    return () => {
+      refTong.off("value", handleTong);
+      refStats.off("value", handleStats);
+    };
   }, []);
 
   return (
     <div className="p-4 md:p-6 space-y-6">
 
-      {/* HEADER */}
+
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
         <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2 text-gray-700">
           <i className="fas fa-chart-line text-blue-500"></i>
@@ -46,10 +78,10 @@ export default function RealtimePage() {
         </span>
       </div>
 
-      {/* GRID */}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
-        {/* LEFT */}
+
         <div className="lg:col-span-2 space-y-5">
 
           <div className="glass p-4 md:p-5 hover-lift">
@@ -72,7 +104,7 @@ export default function RealtimePage() {
 
         </div>
 
-        {/* RIGHT */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
 
           <VolumeCard data={data} />
