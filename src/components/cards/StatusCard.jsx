@@ -1,5 +1,3 @@
-//Kartu untuk menampilkan status sistem
-
 export default function StatusCard({ data }) {
   const status = data.status || "Normal";
 
@@ -13,11 +11,16 @@ export default function StatusCard({ data }) {
     bg = "bg-red-100";
     icon = "fa-exclamation-triangle";
     blink = "animate-pulse";
+  } 
+  else if (status.toLowerCase().includes("sedang")) {
+    color = "text-yellow-500";
+    bg = "bg-yellow-100";
+    icon = "fa-exclamation-circle";
+    blink = "animate-pulse";
   }
 
   return (
     <div className="card-modern border-l-4 border-purple-500">
-
       <div className="flex justify-between items-center">
         <p className="text-sm text-gray-500">Status Sistem</p>
 

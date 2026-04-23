@@ -18,7 +18,7 @@ export default function LogTable({ logs }) {
           <tr key={key} className="border-b text-center">
             <td>{log.timestamp}</td>
             <td>{log.volume}%</td>
-            <td>{log.weight || log.berat} kg</td>
+            <td>{log.weight || log.berat} g</td>
             <td>{log.status}</td>
           </tr>
         ))}

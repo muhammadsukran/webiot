@@ -9,7 +9,7 @@ export default function DistanceCard({ data }) {
 
       <div className="flex justify-between items-center">
         <div>
-          <p className="text-sm text-gray-500">Jarak Sensor</p>
+          <p className="text-sm text-gray-500">Ketinggian sampah</p>
           <h2 className="text-2xl font-bold">
             {distance.toFixed(1)} cm
           </h2>

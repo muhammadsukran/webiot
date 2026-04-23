@@ -29,7 +29,7 @@ export default function WeightCard({ data }) {
       </div>
 
       <h2 className="text-2xl font-bold mt-2">
-        {weight.toFixed(2)} kg
+        {weight.toFixed(2)} g
       </h2>
 
       <div className="relative w-20 h-28 mx-auto mt-4 bg-gray-200 rounded overflow-hidden">

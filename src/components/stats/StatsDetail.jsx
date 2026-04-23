@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-//STATISTIC DETAIL COMPONENT
+// ANIMASI ANGKA
 function useCountUp(value, duration = 800) {
   const [display, setDisplay] = useState(0);
 
@@ -25,13 +25,28 @@ function useCountUp(value, duration = 800) {
 
 export default function StatsDetail({ stats }) {
   const [selected, setSelected] = useState(null);
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
+  // AUTO PILIH DATA TERBARU
   useEffect(() => {
     if (stats && Object.keys(stats).length > 0) {
       const lastKey = Object.keys(stats).reverse()[0];
       setSelected(lastKey);
     }
   }, [stats]);
+
+  // CLOSE DROPDOWN SAAT KLIK DI LUAR
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   if (!stats || Object.keys(stats).length === 0) {
     return (
@@ -44,37 +59,52 @@ export default function StatsDetail({ stats }) {
   const data = stats[selected] || {};
 
   const totalW =
-  data.total_weight_kg ??
-  data.total_berat ??
-  data.avg_weight_kg ??
-  0;
+    data.total_weight_kg ??
+    data.total_berat ??
+    data.avg_weight_kg ??
+    0;
 
   return (
     <div className="glass p-3 md:p-4 rounded-2xl hover-lift">
 
-      {/* FILTER */}
-      <div className="mb-4">
+      {/* DROPDOWN CUSTOM */}
+      <div className="mb-4 relative w-full max-w-xs" ref={dropdownRef}>
         <label className="text-sm text-gray-500">
           Pilih Tanggal
         </label>
 
-        <select
-          className="w-full mt-1 p-2 rounded-lg border focus:ring-2 focus:ring-blue-400 text-sm"
-          value={selected || ""}
-          onChange={(e) => setSelected(e.target.value)}
+        <button
+          onClick={() => setOpen(!open)}
+          className="w-full mt-1 p-2 rounded-lg border bg-white text-black text-left text-sm flex justify-between items-center"
         >
-          {Object.keys(stats)
-            .reverse()
-            .map((k) => (
-              <option key={k} value={k}>
-                {stats[k].date || k}
-              </option>
-            ))}
-        </select>
+          <span className="truncate">
+            {stats[selected]?.date || selected}
+          </span>
+          <i className="fas fa-chevron-down text-gray-400"></i>
+        </button>
+
+        {open && (
+          <div className="absolute left-0 mt-1 w-full bg-white border rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+            {Object.keys(stats)
+              .reverse()
+              .map((k) => (
+                <div
+                  key={k}
+                  onClick={() => {
+                    setSelected(k);
+                    setOpen(false);
+                  }}
+                  className="p-2 text-sm hover:bg-blue-100 cursor-pointer"
+                >
+                  {stats[k].date || k}
+                </div>
+              ))}
+          </div>
+        )}
       </div>
 
       {/* GRID */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2 gap-3">
 
         <StatBox
           icon="fa-door-open"
@@ -113,6 +143,7 @@ export default function StatsDetail({ stats }) {
   );
 }
 
+// KOMPONEN BOX STAT
 function StatBox({ icon, label, value, color, suffix = "", isFloat }) {
   const colors = {
     blue: "bg-blue-100 text-blue-600",
