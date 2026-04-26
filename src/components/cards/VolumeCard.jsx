@@ -2,60 +2,71 @@ export default function VolumeCard({ data }) {
   const volume = data.volume || 0;
 
   let color = "bg-green-500";
-  let icon = "fa-check";
+  let dotColor = "bg-green-500";
   let label = "Normal";
 
-  // status level
-  let level = 0; // 0 = kiri, 1 = tengah, 2 = kanan
-
-  if (volume >= 90) {
+  if (volume >= 80) {
     color = "bg-red-500";
-    icon = "fa-exclamation";
+    dotColor = "bg-red-500";
     label = "Penuh";
-    level = 2;
   } else if (volume >= 50) {
     color = "bg-yellow-500";
-    icon = "fa-exclamation-circle";
+    dotColor = "bg-yellow-500";
     label = "Sedang";
-    level = 1;
   }
-
-  const getDotColor = (index) => {
-    return index === level ? color : "bg-gray-300";
-  };
 
   return (
     <div className="card-modern border-l-4 border-blue-500">
 
-      <div className="flex justify-between items-center mb-3">
-        <div>
-          <p className="text-sm text-gray-500">Volume Sampah</p>
-          <h2 className="text-3xl font-bold text-gradient">
-            {volume}%
-          </h2>
-        </div>
-
-        <div className={`icon-box ${color} text-white shadow`}>
-          <i className={`fas ${icon}`}></i>
-        </div>
+      {/* HEADER */}
+      <div className="mb-4">
+        <p className="text-sm text-gray-500">Volume Sampah</p>
+        <h2 className="text-3xl font-bold text-gradient">
+          {volume}%
+        </h2>
       </div>
 
-      {/* Progress bar */}
-      <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+      {/* GARIS + DOT */}
+      <div className="relative w-full flex items-center">
+
+        {/* GARIS BACKGROUND */}
+        <div className="absolute w-full h-2 bg-gray-200 rounded-full"></div>
+
+        {/* GARIS AKTIF */}
         <div
-          className={`${color} h-2 transition-all duration-500`}
+          className={`h-2 rounded-full ${color} transition-all duration-500`}
           style={{ width: `${volume}%` }}
+        ></div>
+
+        {/* DOT 0% */}
+        <div className="absolute left-0 w-4 h-4 rounded-full bg-white border-2 border-gray-300"></div>
+
+        {/* DOT 50% */}
+        <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white border-2 border-gray-300"></div>
+
+        {/* DOT 100% */}
+        <div className="absolute right-0 w-4 h-4 rounded-full bg-white border-2 border-gray-300"></div>
+
+        {/* DOT AKTIF (BERGERAK) */}
+        <div
+          className={`absolute w-5 h-5 rounded-full ${dotColor} border-2 border-white shadow-md transition-all duration-500`}
+          style={{
+            left: `calc(${volume}% - 10px)`
+          }}
         ></div>
       </div>
 
-      {/* 3 titik indikator */}
-      <div className="flex justify-between items-center mt-3 px-1">
-        <div className={`w-3 h-3 rounded-full ${getDotColor(0)}`}></div>
-        <div className={`w-3 h-3 rounded-full ${getDotColor(1)}`}></div>
-        <div className={`w-3 h-3 rounded-full ${getDotColor(2)}`}></div>
+      {/* LABEL */}
+      <div className="flex justify-between text-xs text-gray-400 mt-2">
+        <span>0%</span>
+        <span>50%</span>
+        <span>100%</span>
       </div>
 
-      <p className="text-xs text-gray-400 mt-2">{label}</p>
+      {/* STATUS */}
+      <p className="text-xs mt-3 text-gray-500">
+        Status: <span className="font-semibold">{label}</span>
+      </p>
     </div>
   );
 }
